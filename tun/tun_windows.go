@@ -19,11 +19,12 @@ import (
 )
 
 const (
-	TAPWIN32_MAX_REG_SIZE    = 256
-	TUNTAP_COMPONENT_ID_0901 = "tap0901"
-	TUNTAP_COMPONENT_ID_0801 = "tap0801"
-	NETWORK_KEY              = `SYSTEM\\CurrentControlSet\\Control\\Network\\{4D36E972-E325-11CE-BFC1-08002BE10318}`
-	ADAPTER_KEY              = `SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002BE10318}`
+	TAPWIN32_MAX_REG_SIZE      = 256
+	TUNTAP_COMPONENT_ID_0901   = "tap0901"
+	TUNTAP_COMPONENT_ID_0801   = "tap0801"
+	TUNTAP_COMPONENT_ID_WINTUN = "wintun"
+	NETWORK_KEY                = `SYSTEM\\CurrentControlSet\\Control\\Network\\{4D36E972-E325-11CE-BFC1-08002BE10318}`
+	ADAPTER_KEY                = `SYSTEM\CurrentControlSet\Control\Class\{4D36E972-E325-11CE-BFC1-08002BE10318}`
 )
 
 func ctl_code(device_type, function, method, access uint32) uint32 {
@@ -127,7 +128,7 @@ func getTuntapComponentId(ifaceName string) (string, string, error) {
 		}
 
 		id := decodeUTF16(component_id)
-		if id == TUNTAP_COMPONENT_ID_0901 || id == TUNTAP_COMPONENT_ID_0801 {
+		if id == TUNTAP_COMPONENT_ID_0901 || id == TUNTAP_COMPONENT_ID_0801 || id == TUNTAP_COMPONENT_ID_WINTUN {
 			var valtype uint32
 			var netCfgInstanceId = make([]byte, TAPWIN32_MAX_REG_SIZE)
 			var netCfgInstanceIdLen = uint32(len(netCfgInstanceId))
